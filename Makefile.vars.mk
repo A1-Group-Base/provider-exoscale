@@ -2,7 +2,7 @@
 
 PROJECT_ROOT_DIR = .
 PROJECT_NAME ?= provider-exoscale
-PROJECT_OWNER ?= vshn
+PROJECT_OWNER ?= a1-group-base
 
 ## BUILD:go
 BIN_FILENAME ?= $(PROJECT_NAME)

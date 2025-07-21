@@ -49,7 +49,7 @@ func (p *pipeline) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 		TerminationProtection: &spec.TerminationProtection,
 		Plan:                  spec.Size.Plan,
 		IPFilter:              ipFilter,
-		MysqlSettings:         settings,
+		MysqlSettings:         &settings,
 	}
 	resp, err := p.exo.CreateDBAASServiceMysql(ctx, mySQLInstance.GetInstanceName(), body)
 	if err != nil {

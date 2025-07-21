@@ -47,7 +47,7 @@ func (p *pipeline) Update(ctx context.Context, mg resource.Managed) (managed.Ext
 		TerminationProtection: &spec.TerminationProtection,
 		Plan:                  spec.Size.Plan,
 		IPFilter:              ipFilter,
-		MysqlSettings:         settings,
+		MysqlSettings:         &settings,
 	}
 	resp, err := p.exo.UpdateDBAASServiceMysql(ctx, mySQLInstance.GetInstanceName(), body)
 	if err != nil {

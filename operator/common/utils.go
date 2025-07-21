@@ -14,6 +14,7 @@ var (
 		"AT-VIE-1": exoscalesdk.ATVie1,
 		"AT-VIE-2": exoscalesdk.ATVie2,
 		"BG-SOF-1": exoscalesdk.BGSof1,
+		"HR-ZAG-1": "https://api-hr-zag-1.exoscale.com/v2",
 		"ch-dk-2":  exoscalesdk.CHDk2,
 		"ch-gva-2": exoscalesdk.CHGva2,
 		"de-fra-1": exoscalesdk.DEFra1,
@@ -21,5 +22,6 @@ var (
 		"at-vie-1": exoscalesdk.ATVie1,
 		"at-vie-2": exoscalesdk.ATVie2,
 		"bg-sof-1": exoscalesdk.BGSof1,
+		"hr-zag-1": "https://api-hr-zag-1.exoscale.com/v2",
 	}
 )

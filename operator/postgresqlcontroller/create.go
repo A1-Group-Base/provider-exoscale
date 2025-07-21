@@ -74,6 +74,6 @@ func fromSpecToCreateBody(spec exoscalev1.PostgreSQLParameters) (exoscalesdk.Cre
 			Time: spec.Maintenance.TimeOfDay.String(),
 		},
 		IPFilter:   spec.IPFilter,
-		PGSettings: settings,
+		PGSettings: &settings,
 	}, nil
 }

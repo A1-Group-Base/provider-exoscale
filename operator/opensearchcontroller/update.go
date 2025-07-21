@@ -35,7 +35,7 @@ func (p *pipeline) Update(ctx context.Context, mg resource.Managed) (managed.Ext
 		Maintenance: &exoscalesdk.UpdateDBAASServiceOpensearchRequestMaintenance{
 			Dow:  exoscalesdk.UpdateDBAASServiceOpensearchRequestMaintenanceDow(forProvider.Maintenance.DayOfWeek),
 			Time: forProvider.Maintenance.TimeOfDay.String()},
-		OpensearchSettings:    settings,
+		OpensearchSettings:    &settings,
 		Plan:                  forProvider.Size.Plan,
 		IPFilter:              ipFilter,
 		TerminationProtection: &forProvider.TerminationProtection,
