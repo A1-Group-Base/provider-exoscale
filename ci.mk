@@ -39,7 +39,7 @@ package-build: docker-build
 
 .PHONY: package-push
 package-push: package-build
-	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push -f package/package.xpkg ${IMG} --verbose
+	go run github.com/crossplane/crossplane/cmd/crank@v1.16.0 xpkg push --domain=https://ghcr.io -f package/package.xpkg ${IMG} --verbose
 
 .PHONY: package-build-branchtag
 package-build-branchtag: export IMG_TAG=$(shell git rev-parse --abbrev-ref HEAD | sed 's/\//_/g')
