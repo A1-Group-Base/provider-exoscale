@@ -84,6 +84,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert to lowercase and export
+        id: lc-repo
+        run: |
+          lower=$(echo "${github.repository}" | tr '[:upper:]' '[:lower:]')
+          echo "github_repository_lc=$lower" >> $GITHUB_OUTPUT
+
       - name: Publish releases
         uses: goreleaser/goreleaser-action@v6
         with:
@@ -91,5 +97,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CONTAINER_REGISTRY: ghcr.io
-          IMAGE_NAME: ${{ github.repository }}${{ env.SUFFIX }}
+          IMAGE_NAME: ${{ steps.lc-repo.outputs.github_repository_lc }}${{ env.SUFFIX }}
 
