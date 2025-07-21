@@ -7,10 +7,13 @@ on:
 
 env:
   APP_NAME: provider-exoscale
-  PUSH_UPBOUND: "True"
+  PUSH_UPBOUND: "False"
   PUSH_PACKAGE: "True"
   PUSH_IMAGE: "False"
   SUFFIX: "/controller"
+
+permissions:
+  packages: write
 
 jobs:
   dist:
