@@ -87,7 +87,7 @@ jobs:
       - name: Convert to lowercase and export
         id: lc-repo
         run: |
-          lower=$(echo "${github.repository}" | tr '[:upper:]' '[:lower:]')
+          lower=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           echo "github_repository_lc=$lower" >> $GITHUB_OUTPUT
 
       - name: Publish releases
