@@ -44,7 +44,7 @@ func (p *pipeline) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 
 	body := exoscalesdk.CreateDBAASServiceKafkaRequest{
 		IPFilter:      ipFilter,
-		KafkaSettings: settings,
+		KafkaSettings: &settings,
 		Maintenance: &exoscalesdk.CreateDBAASServiceKafkaRequestMaintenance{
 			Dow:  exoscalesdk.CreateDBAASServiceKafkaRequestMaintenanceDow(spec.Maintenance.DayOfWeek),
 			Time: spec.Maintenance.TimeOfDay.String(),
@@ -53,7 +53,7 @@ func (p *pipeline) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 		Version:               spec.Version,
 		TerminationProtection: &spec.TerminationProtection,
 		KafkaRestEnabled:      &spec.KafkaRestEnabled,
-		KafkaRestSettings:     restSettings,
+		KafkaRestSettings:     &restSettings,
 	}
 
 	resp, err := p.exo.CreateDBAASServiceKafka(ctx, instance.GetInstanceName(), body)

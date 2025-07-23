@@ -43,7 +43,7 @@ func (p *pipeline) Update(ctx context.Context, mg resource.Managed) (managed.Ext
 
 	body := exoscalesdk.UpdateDBAASServiceKafkaRequest{
 		IPFilter:      ipFilter,
-		KafkaSettings: settings,
+		KafkaSettings: &settings,
 		Maintenance: &exoscalesdk.UpdateDBAASServiceKafkaRequestMaintenance{
 			Dow:  exoscalesdk.UpdateDBAASServiceKafkaRequestMaintenanceDow(spec.Maintenance.DayOfWeek),
 			Time: spec.Maintenance.TimeOfDay.String(),
@@ -51,7 +51,7 @@ func (p *pipeline) Update(ctx context.Context, mg resource.Managed) (managed.Ext
 		Plan:                  spec.Size.Plan,
 		TerminationProtection: &spec.TerminationProtection,
 		KafkaRestEnabled:      &spec.KafkaRestEnabled,
-		KafkaRestSettings:     restSettings,
+		KafkaRestSettings:     &restSettings,
 	}
 
 	resp, err := p.exo.UpdateDBAASServiceKafka(ctx, instance.GetInstanceName(), body)

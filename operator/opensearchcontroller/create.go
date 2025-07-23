@@ -37,7 +37,7 @@ func (p *pipeline) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 			Dow:  exoscalesdk.CreateDBAASServiceOpensearchRequestMaintenanceDow(forProvider.Maintenance.DayOfWeek),
 			Time: forProvider.Maintenance.TimeOfDay.String(),
 		},
-		OpensearchSettings:    settings,
+		OpensearchSettings:    &settings,
 		TerminationProtection: &forProvider.TerminationProtection,
 		// majorVersion can be only major: ['1','2']
 		Version: forProvider.MajorVersion,
