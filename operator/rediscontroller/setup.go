@@ -40,6 +40,7 @@ func createReconciler(mgr ctrl.Manager, name string, recorder event.Recorder, c 
 		resource.ManagedKind(exoscalev1.RedisGroupVersionKind),
 		managed.WithExternalConnecter(c),
 		managed.WithLogger(logging.NewLogrLogger(mgr.GetLogger().WithValues("controller", name))),
+		managed.WithManagementPolicies(),
 		managed.WithRecorder(recorder),
 		managed.WithPollInterval(1*time.Minute),
 		managed.WithConnectionPublishers(cps...),

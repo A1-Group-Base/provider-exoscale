@@ -26,6 +26,7 @@ func SetupController(mgr ctrl.Manager) error {
 			Recorder: recorder,
 		}),
 		managed.WithLogger(logging.NewLogrLogger(mgr.GetLogger().WithValues("controller", name))),
+		managed.WithManagementPolicies(),
 		managed.WithRecorder(recorder),
 		managed.WithPollInterval(1*time.Hour),
 		managed.WithConnectionPublishers(cps...))
