@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"k8s.io/apimachinery/pkg/runtime"
@@ -56,6 +57,25 @@ func (p *pipeline) Observe(ctx context.Context, mg resource.Managed) (managed.Ex
 	caCert, err := p.exo.GetDBAASCACertificate(ctx)
 	if err != nil {
 		return managed.ExternalObservation{}, fmt.Errorf("cannot retrieve CA certificate: %w", err)
+	}
+
+	if res.ConnectionInfo != nil && (res.ConnectionInfo.AccessCert == "" || res.ConnectionInfo.AccessKey == "") {
+		username := kafkaPrimaryUsername(res)
+		if username == "" {
+			return managed.ExternalObservation{}, errors.New("failed to get kafka connection details: no primary user returned")
+		}
+		secrets, err := p.exo.RevealDBAASKafkaUserPassword(ctx, string(res.Name), username)
+		if err != nil {
+			return managed.ExternalObservation{}, fmt.Errorf("cannot reveal kafka user credentials: %w", err)
+		}
+		info := *res.ConnectionInfo
+		if info.AccessCert == "" {
+			info.AccessCert = secrets.AccessCert
+		}
+		if info.AccessKey == "" {
+			info.AccessKey = secrets.AccessKey
+		}
+		res.ConnectionInfo = &info
 	}
 
 	connDetails, err := getConnectionDetails(res, caCert.Certificate)
@@ -175,6 +195,22 @@ func getConnectionDetails(external *exoscalesdk.DBAASServiceKafka, ca string) (m
 	}
 
 	return details, nil
+}
+
+// kafkaPrimaryUsername returns the username of the primary service user, falling back to the user in connection-info.connect-uri.
+func kafkaPrimaryUsername(external *exoscalesdk.DBAASServiceKafka) string {
+	for _, u := range external.Users {
+		if u.Type == "primary" && u.Username != "" {
+			return u.Username
+		}
+	}
+	if external.ConnectionInfo != nil && external.ConnectionInfo.ConnectURI != "" {
+		parsed, err := url.Parse(external.ConnectionInfo.ConnectURI)
+		if err == nil && parsed.User != nil {
+			return parsed.User.Username()
+		}
+	}
+	return ""
 }
 
 func diffParameters(external *exoscalesdk.DBAASServiceKafka, expected exoscalev1.KafkaParameters) (bool, string) {
